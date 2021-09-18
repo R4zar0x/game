@@ -1,36 +1,36 @@
 import random
 from os import environ
-environ['PYGAME_HIDE_SUPPORT_PROMPT'] = '1'
+environ['PYGAME_HIDE_SUPPORT_PROMPT'] = '1'   # отключает приветствие от создателей пайгейма
 import pygame
-import pygame.freetype
+import pygame.freetype              # использование других шрифтов
 import json
 import tfg
 
-pygame.init()
+pygame.init()  # инициализация пайгейма
 
 pygame.font.init()
 width, height = 1366, 768  # 924, 693; 1366, 768; 1920, 1080
 size_py = (width, height)
 screen = pygame.display.set_mode(size_py, pygame.FULLSCREEN)
 clock = pygame.time.Clock()
-f1 = pygame.font.Font("Cony Light.otf", 21)               # Cony Light.otf; Caviar Dreams.ttf
+f1 = pygame.font.Font("Cony Light.otf", 21)
 font = pygame.freetype.Font("Cony Light.otf", 20)
 
 fps = 60
-move = 11
+move = 11  # ширина клетки
 
 map_arr = []
-lx, ly = 0, 0
-x_cap, y_cap = 0, 0
-menu = 0
-index = 0
-inf_pos = 0
-zone = True
-lb = False
-rb_info = False
+lx, ly = 0, 0           # округленные координаты
+x_cap, y_cap = 0, 0            # координаты левого верхнего угла на красном квадрате
+menu = 0  # выделенное меню
+index = 0  # не помню что это
+inf_pos = 0  # не помню что это
+zone = True  # наличие курсора в зоне карты
+lb = False  # не помню, вроде бесполезная херня
+rb_info = False  # нажатие ПКМ
 
 
-def menu_num():
+def menu_num():  # обработка меню выбора дома
     global menu
     if event.pos[1] < 44:
         if event.pos[0] < 44:
@@ -50,7 +50,7 @@ def menu_num():
             run = False
 
 
-def add():
+def add():  # добавление на карту зданий
     global menu
     if zone:
         jj = int(lx / move)
@@ -72,10 +72,11 @@ def add():
 def greed():
     """отрисовка сетки мира"""
     for xg in range(0, width, move):
-        pygame.draw.aaline(screen, pygame.Color("gray"), (xg, move * 4), (xg, height))
+        pygame.draw.aaline(screen, pygame.Color("gray"), (xg, move * 4), (xg, height))  # вертикальные полосы
     for yg in range(move * 4, height, move):
-        pygame.draw.aaline(screen, pygame.Color("gray"), (0, yg), (width, yg))
-    pygame.draw.aaline(screen, pygame.Color("dimgray"), (0, 44), (width, 44), 1)
+        pygame.draw.aaline(screen, pygame.Color("gray"), (0, yg), (width, yg))  # горизонтальные полосы
+    pygame.draw.aaline(screen, pygame.Color("dimgray"), (0, 44), (width, 44),
+                       1)  # верхняя темная линия (под меню выбора)
 
 
 def mouse_rect(mx, my):
@@ -85,7 +86,7 @@ def mouse_rect(mx, my):
 
 
 def gui():
-    """ интерфейс"""
+    """ интерфейс, его отрисовка"""
     screen.blit(menu_surf, (0, 0))
     screen.blit(delete, (width - 90, 0))  # width - 88 - 2
     screen.blit(esc_surf, (width - 46, 0))  # width - 44 - 2
@@ -93,10 +94,10 @@ def gui():
     # date = f1.render()
 
 
-def word_wrap(surf, text, fon, color=pygame.Color("dimgray")):
+def word_wrap(surf, text, fon, color=pygame.Color("dimgray")):              # разбивает одну строку на нескоько чтобы поместилось в окно, вызываемое на ПКМ
     fon.origin = True
     words = text.split(' ')
-    wid, heig = surf.get_size()     # 264, 308
+    wid, heig = surf.get_size()     # 264, 308 (ширина, высота), эти значения на всякий случай, размер окна, вызываемого на ПКМ
     line_spacing = fon.get_sized_height() + 2
     x, y = 1127, 63 + line_spacing
     space = fon.get_rect(' ')
@@ -113,7 +114,7 @@ def word_wrap(surf, text, fon, color=pygame.Color("dimgray")):
     return x, y
 
 
-def info(inf, n_txt):
+def info(inf, n_txt):               # меню вызываемое на ПКМ
     if inf:
         pygame.draw.rect(screen, pygame.Color("white"), (width - 255, height - 724, 254, 308))
         pygame.draw.rect(screen, pygame.Color("dimgray"), (width - 255, height - 724, 254, 308), 2)
@@ -129,9 +130,9 @@ while y_cap < 43:
     x_cap = x_cap - (x_cap % move) - 1
     y_cap = y_cap - (y_cap % move) - 1
 
-tx = int(width / move)
-ty = int((height - move * 4) / move)
-for i in range(ty):
+tx = int(width / move)              # определение колличества клеток по оси Х
+ty = int((height - move * 4) / move)             # определение колличества клеток по оси У
+for i in range(ty):                 # заполнение массива карты
     map_arr.append([])
     for j in range(tx):
         fir_count = 0
@@ -161,6 +162,7 @@ for i in range(ty):
 with open('seed.txt', 'w') as fw:
     json.dump(pygame.font.get_fonts(), fw)
 
+"""Копирование изображений в озу и присваивание им названий"""
 """ Ресурсы"""
 coal = pygame.image.load("resources/Coal.png")
 copper = pygame.image.load("resources/Copper ore.png")
@@ -187,28 +189,28 @@ delete = pygame.image.load("GUI/trash.png")
 run = True
 while run:
 
-    events = pygame.event.get()
+    events = pygame.event.get()         # кортеж событий
     for event in events:
-        if event.type == pygame.QUIT:
+        if event.type == pygame.QUIT:       # событие нажатия крестика выхода
             run = False
-        elif event.type == pygame.MOUSEMOTION:
-            lx = event.pos[0] - (event.pos[0] % move)
-            ly = event.pos[1] - (event.pos[1] % move)
-            if ly > 43:
+        elif event.type == pygame.MOUSEMOTION:              # обработка движения мыши
+            lx = event.pos[0] - (event.pos[0] % move)           # как я и обьяснял, вычисления координаты ячейки по оси Х
+            ly = event.pos[1] - (event.pos[1] % move)           # ровно то же, но и осью У
+            if ly > 43:             # чтобы выделенный квадрат, который следует за курсором не залазил на менюшку
                 zone = True
             else:
                 zone = False
-        elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+        elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:             # нажатие ЛКМ pygame.MOUSEBUTTONDOWN - событие нажатия клавиши, event.button == 1 - клавиша ЛКМ
             lb = True
             menu_num()
-            if x_cap < event.pos[0] < x_cap + move * 5 + 1 and y_cap < event.pos[1] < y_cap + move * 5 + 1:
-                add()
-        elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 3:
-            rb_info = not rb_info
-            inf_pos = map_arr[int(ly / move) - 4][int(lx / move)]
+            if x_cap < event.pos[0] < x_cap + move * 5 + 1 and y_cap < event.pos[1] < y_cap + move * 5 + 1:         # курсор внутри красного квадрата
+                add()         # вызов функции
+        elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 3:        # проверка нажатия ПКМ
+            rb_info = not rb_info               # включение меню
+            inf_pos = map_arr[int(ly / move) - 4][int(lx / move)]       # запоминание ячейки, о которой нужно показать информацию
 
-    keys = pygame.key.get_pressed()
-    if keys[pygame.K_1]:
+    keys = pygame.key.get_pressed()         # кортеж нажатых клавиш
+    if keys[pygame.K_1]:        # если нажата клавиша 1 то выбано на панеле соответствующее значение
         menu = 0
     if keys[pygame.K_2]:
         menu = 1
@@ -223,11 +225,11 @@ while run:
     if keys[pygame.K_ESCAPE]:
         run = False
 
-    screen.fill(pygame.Color('white'))
-    greed()
-    gui()
+    screen.fill(pygame.Color('white'))              # заполнения экрана белым
+    greed()             # отрисовка сетки
+    gui()               # менюшка
 
-    for i in range(ty):
+    for i in range(ty):                 # отрисовка значков на карте
         for j in range(tx):
             if map_arr[i][j] == 1:
                 """отрисовка угля"""
@@ -270,11 +272,11 @@ while run:
                 screen.blit(tree, (j * move, (i + 4) * move))
 
     mouse_rect(lx, ly)
-    pygame.draw.rect(screen, pygame.Color("red"), (x_cap, y_cap, move * 5 + 3, move * 5 + 3), 1)
+    pygame.draw.rect(screen, pygame.Color("red"), (x_cap, y_cap, move * 5 + 3, move * 5 + 3), 1)        # красный квадрат
 
     info(rb_info, inf_pos)
 
-    clock.tick(fps)
-    pygame.display.flip()
+    clock.tick(fps)       # задержка на 1/fps секунды
+    pygame.display.flip()           # обновление экрана
 
-pygame.quit()
+pygame.quit()           # выход из пайгейма
