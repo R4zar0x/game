@@ -1,6 +1,4 @@
 aiofiles==0.6.0
-b0mb3r==0.1.0
-b0mb3r-cli @ git+https://github.com/Moonquit/b0mb3r_cli.git@661f2c6f9d5ba50fb87d70ce0839438d52a3d9ec
 certifi==2020.12.5
 chardet==3.0.4
 click==7.1.2
