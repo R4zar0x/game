@@ -20,7 +20,7 @@ font = pygame.freetype.Font("Cony Light.otf", 20)
 fps = 60
 move = 11  # ширина клетки
 
-season = 1
+week = 1
 month = 1
 year = 0
 map_arr = []
