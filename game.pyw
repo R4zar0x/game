@@ -9,7 +9,7 @@ import tfg
 pygame.init()  # инициализация пайгейма
 
 pygame.font.init()
-width, height = 1920, 1080 #1366, 768  924, 693; 1366, 768; 1920, 1080
+width, height = 1366, 768    # 924, 693; 1366, 768; 1920, 1080
 size_py = (width, height)
 screen = pygame.display.set_mode(size_py, pygame.FULLSCREEN)
 clock = pygame.time.Clock()
@@ -34,24 +34,26 @@ lb = False  # не помню, вроде бесполезная херня
 rb_info = False  # нажатие ПКМ
 
 
-def menu_num():  # обработка меню выбора дома
+def menu_num():  # обработка меню выбора
     global menu
     if event.pos[1] < 44:
         if event.pos[0] < 44:
             menu = 0
-        elif 44 < event.pos[0] < 87:
+        elif 44 <= event.pos[0] < 88:
             menu = 1
-        elif 88 < event.pos[0] < 131:
+        elif 88 <= event.pos[0] < 132:
             menu = 2
-        elif 132 < event.pos[0] < 175:
+        elif 132 <= event.pos[0] < 176:
             menu = 3
-        elif 176 < event.pos[0] < 219:
+        elif 176 <= event.pos[0] < 220:
             menu = 4
-        elif 220 < event.pos[0] < 263:
+        elif 220 <= event.pos[0] < 264:
             menu = 5
-        elif width - 90 < event.pos[0] < width - 47:  # -90 = 2 * 44 - 2; -47 = - 44 - 2 - 1
+        elif 264 <= event.pos[0] < 308:
+            menu = 6
+        elif width - 90 <= event.pos[0] < width - 46:  # -90 = 2 * 44 - 2; -47 = - 44 - 2
             menu = 29
-        elif width - 46 < event.pos[0] < width - 3:  # -46 = - 44 - 2; -3 =  - 2 - 1
+        elif width - 46 <= event.pos[0] < width - 2:  # -46 = - 44 - 2; -3 =  - 2
             global run
             run = False
 
@@ -59,8 +61,8 @@ def menu_num():  # обработка меню выбора дома
 def add():  # добавление на карту зданий
     global menu
     if zone:
-        jj = int(lx / move)
-        ii = int(ly / move) - 4
+        jj = int(lx / move)      # Номер клеточки в горизонтальном ряду
+        ii = int(ly / move) - 4     # Номер клеточки в вертикальнои ряду (с учетом меню)
         if menu == 0 and map_arr[ii][jj] == 0:
             map_arr[ii][jj] = 8
         elif menu == 1 and map_arr[ii][jj] == 0:
@@ -71,8 +73,10 @@ def add():  # добавление на карту зданий
             map_arr[ii][jj] = 11
         elif menu == 4 and (7 >= map_arr[ii][jj] > 0):
             map_arr[ii][jj] = 12
-        elif menu == 5:
+        elif menu == 5 and map_arr[ii][jj] == 0:
             map_arr[ii][jj] = 14
+        elif menu == 6 and map_arr[ii][jj] == 0:
+            map_arr[ii][jj] = 15
         elif menu == 29 and (12 >= map_arr[ii][jj] >= 8):
             map_arr[ii][jj] = 0
 
@@ -99,8 +103,8 @@ def gui():
     screen.blit(delete, (width - 90, 0))  # width - 88 - 2
     screen.blit(esc_surf, (width - 46, 0))  # width - 44 - 2
     screen.blit(rec, (menu * 44, 0))
-    date = f2.render("Сезон: {}/{}".format(week, month), True, pygame.Color("black"))
-    d_year = f2.render("Год: {}".format(year), True, pygame.Color("black"))
+    date = f2.render(f"Сезон: {week}/{month}", True, pygame.Color("black"))
+    d_year = f2.render(f"Год: {year}", True, pygame.Color("black"))
     screen.blit(date, (width - 160, 5))
     screen.blit(d_year, (width - 160, 25))
 
@@ -127,8 +131,8 @@ def word_wrap(surf, text, fon, color=pygame.Color("dimgray")):              # р
 
 def info(inf, n_txt):               # меню вызываемое на ПКМ
     if inf:
-        pygame.draw.rect(screen, pygame.Color("white"), (width - 255, height - 724, 254, 308))
-        pygame.draw.rect(screen, pygame.Color("dimgray"), (width - 255, height - 724, 254, 308), 2)
+        pygame.draw.rect(screen, pygame.Color("white"), (width - 255, 44, 254, 308))
+        pygame.draw.rect(screen, pygame.Color("dimgray"), (width - 255, 44, 254, 308), 2)
         txt = f1.render(str(tfg.text[n_txt]), True, pygame.Color("dimgray"))
         screen.blit(txt, (width - 154, height - 721))
         txt1 = str(tfg.inf_tx[n_txt])
@@ -145,33 +149,33 @@ tx = int(width / move)              # определение колличест�
 ty = int((height - move * 4) / move)             # определение колличества клеток по оси У
 for i in range(ty):                 # заполнение массива карты
     map_arr.append([])
+    fir_count = 0
+    sw = 0
     for j in range(tx):
-        fir_count = 0
-        sw = 0
         c = random.randint(0, 400)
         if 50 >= c >= 45:
-            map_arr[i].append(1)
+            map_arr[i].append(1)        # Уголь
         elif c == 1:
-            map_arr[i].append(2)
+            map_arr[i].append(2)        # Медь
         elif c == 2 and fir_count < 10:
-            map_arr[i].append(3)
+            map_arr[i].append(3)        # Фируз
             fir_count += 1
         elif c == 3:
-            map_arr[i].append(4)
+            map_arr[i].append(4)        # Золото
         elif c == 4:
-            map_arr[i].append(5)
+            map_arr[i].append(5)        # Железо
         elif c == 5 and sw < 4:
-            map_arr[i].append(6)
+            map_arr[i].append(6)        # Болотный камень
             sw += 1
         elif c == 6:
-            map_arr[i].append(7)
+            map_arr[i].append(7)        # Олово
         elif 13 <= c <= 33:
-            map_arr[i].append(13)
+            map_arr[i].append(13)       # Дерево
         else:
-            map_arr[i].append(0)
+            map_arr[i].append(0)        # Пустое поле
 
 with open('seed.txt', 'w') as fw:
-    json.dump(pygame.font.get_fonts(), fw)
+    json.dump(map_arr, fw)
 
 """Копирование изображений в ОЗУ и присваивание им названий"""
 """ Ресурсы"""
@@ -191,7 +195,7 @@ lab_surf = pygame.image.load("buildings/laboratory.png")
 home_surf = pygame.image.load("buildings/home.png")
 mine_surf = pygame.image.load("buildings/mine.png")
 storage_surf = pygame.image.load("buildings/storage.png")
-sawmill = pygame.image.load("buildings/sawmill.png")
+sawmill_surf = pygame.image.load("buildings/sawmill.png")
 
 """GUI"""
 menu_surf = pygame.image.load("GUI/menu.png")
@@ -207,15 +211,16 @@ while run:
         if event.type == pygame.QUIT:       # событие нажатия крестика выхода
             run = False
         elif event.type == pygame.MOUSEMOTION:              # обработка движения мыши
-            lx = event.pos[0] - (event.pos[0] % move)           # как я и обьяснял, вычисления координаты ячейки по оси Х
+            lx = event.pos[0] - (event.pos[0] % move)           # как я и обьяснял, вычисления координаты ячейки по оси Х (верхняя левая тчк квадратика)
             ly = event.pos[1] - (event.pos[1] % move)           # ровно то же, но и осью У
             if ly > 43:             # чтобы выделенный квадрат, который следует за курсором не залазил на менюшку
                 zone = True
             else:
                 zone = False
-        elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:             # нажатие ЛКМ pygame.MOUSEBUTTONDOWN - событие нажатия клавиши, event.button == 1 - клавиша ЛКМ
+        elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+            # нажатие ЛКМ pygame.MOUSEBUTTONDOWN - событие нажатия клавиши, event.button == 1 - клавиша ЛКМ
             lb = True
-            menu_num()
+            menu_num()      #
             if x_cap < event.pos[0] < x_cap + move * 5 + 1 and y_cap < event.pos[1] < y_cap + move * 5 + 1:         # курсор внутри красного квадрата
                 add()         # вызов функции
         elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 3:        # проверка нажатия ПКМ
@@ -288,6 +293,9 @@ while run:
             elif map_arr[i][j] == 14:
                 """отрисовка склада"""
                 screen.blit(storage_surf, (j * move, (i + 4) * move))
+            elif map_arr[i][j] == 15:
+                """отрисовка лесопилки"""
+                screen.blit(sawmill_surf, (j * move, (i + 4) * move))
 
     mouse_rect(lx, ly)
     pygame.draw.rect(screen, pygame.Color("red"), (x_cap, y_cap, move * 5 + 3, move * 5 + 3), 1)        # красный квадрат
