@@ -9,7 +9,7 @@ import tfg
 pygame.init()  # инициализация пайгейма
 
 pygame.font.init()
-width, height = 1366, 768  # 924, 693; 1366, 768; 1920, 1080
+width, height = 1920, 1080 #1366, 768  924, 693; 1366, 768; 1920, 1080
 size_py = (width, height)
 screen = pygame.display.set_mode(size_py, pygame.FULLSCREEN)
 clock = pygame.time.Clock()
@@ -25,7 +25,7 @@ month = 1
 year = 0
 map_arr = []
 lx, ly = 0, 0           # округленные координаты
-x_cap, y_cap = 0, 0            # координаты левого верхнего угла на красном квадрате
+x_cap, y_cap = 0, 0            # координаты левого верхнего угла на поле работ
 menu = 0  # выделенное меню
 index = 0  # не помню что это
 inf_pos = 0  # не помню что это
