@@ -103,7 +103,7 @@ def gui():
     screen.blit(delete, (width - 90, 0))  # width - 88 - 2
     screen.blit(esc_surf, (width - 46, 0))  # width - 44 - 2
     screen.blit(rec, (menu * 44, 0))
-    date = f2.render(f"Сезон: {season}/{month}", True, pygame.Color("black"))
+    date = f2.render(f"Сезон: {week}/{month}", True, pygame.Color("black"))
     d_year = f2.render(f"Год: {year}", True, pygame.Color("black"))
     screen.blit(date, (width - 160, 5))
     screen.blit(d_year, (width - 160, 25))
