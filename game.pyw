@@ -145,6 +145,8 @@ while y_cap < 43:
     x_cap = x_cap - (x_cap % move) - 1
     y_cap = y_cap - (y_cap % move) - 1
 
+# for commit
+
 tx = int(width / move)              # определение колличества клеток по оси Х
 ty = int((height - move * 4) / move)             # определение колличества клеток по оси У
 for i in range(ty):                 # заполнение массива карты
