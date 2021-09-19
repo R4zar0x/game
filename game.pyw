@@ -20,7 +20,7 @@ font = pygame.freetype.Font("Cony Light.otf", 20)
 fps = 60
 move = 11  # ширина клетки
 
-week = 1
+season = 1
 month = 1
 year = 0
 map_arr = []
@@ -103,7 +103,7 @@ def gui():
     screen.blit(delete, (width - 90, 0))  # width - 88 - 2
     screen.blit(esc_surf, (width - 46, 0))  # width - 44 - 2
     screen.blit(rec, (menu * 44, 0))
-    date = f2.render(f"Сезон: {week}/{month}", True, pygame.Color("black"))
+    date = f2.render(f"Сезон: {season}/{month}", True, pygame.Color("black"))
     d_year = f2.render(f"Год: {year}", True, pygame.Color("black"))
     screen.blit(date, (width - 160, 5))
     screen.blit(d_year, (width - 160, 25))
@@ -145,7 +145,6 @@ while y_cap < 43:
     x_cap = x_cap - (x_cap % move) - 1
     y_cap = y_cap - (y_cap % move) - 1
 
-# for commit
 
 tx = int(width / move)              # определение колличества клеток по оси Х
 ty = int((height - move * 4) / move)             # определение колличества клеток по оси У
