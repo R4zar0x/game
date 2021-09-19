@@ -14,11 +14,15 @@ size_py = (width, height)
 screen = pygame.display.set_mode(size_py, pygame.FULLSCREEN)
 clock = pygame.time.Clock()
 f1 = pygame.font.Font("Cony Light.otf", 21)
+f2 = pygame.font.Font("Cony Light.otf", 16)
 font = pygame.freetype.Font("Cony Light.otf", 20)
 
 fps = 60
 move = 11  # ширина клетки
 
+week = 1
+month = 1
+year = 0
 map_arr = []
 lx, ly = 0, 0           # округленные координаты
 x_cap, y_cap = 0, 0            # координаты левого верхнего угла на красном квадрате
@@ -43,6 +47,8 @@ def menu_num():  # обработка меню выбора дома
             menu = 3
         elif 176 < event.pos[0] < 219:
             menu = 4
+        elif 220 < event.pos[0] < 263:
+            menu = 5
         elif width - 90 < event.pos[0] < width - 47:  # -90 = 2 * 44 - 2; -47 = - 44 - 2 - 1
             menu = 29
         elif width - 46 < event.pos[0] < width - 3:  # -46 = - 44 - 2; -3 =  - 2 - 1
@@ -65,6 +71,8 @@ def add():  # добавление на карту зданий
             map_arr[ii][jj] = 11
         elif menu == 4 and (7 >= map_arr[ii][jj] > 0):
             map_arr[ii][jj] = 12
+        elif menu == 5:
+            map_arr[ii][jj] = 14
         elif menu == 29 and (12 >= map_arr[ii][jj] >= 8):
             map_arr[ii][jj] = 0
 
@@ -91,7 +99,10 @@ def gui():
     screen.blit(delete, (width - 90, 0))  # width - 88 - 2
     screen.blit(esc_surf, (width - 46, 0))  # width - 44 - 2
     screen.blit(rec, (menu * 44, 0))
-    # date = f1.render()
+    date = f2.render("Сезон: {}/{}".format(week, month), True, pygame.Color("black"))
+    d_year = f2.render("Год: {}".format(year), True, pygame.Color("black"))
+    screen.blit(date, (width - 160, 5))
+    screen.blit(d_year, (width - 160, 25))
 
 
 def word_wrap(surf, text, fon, color=pygame.Color("dimgray")):              # разбивает одну строку на нескоько чтобы поместилось в окно, вызываемое на ПКМ
@@ -162,7 +173,7 @@ for i in range(ty):                 # заполнение массива кар
 with open('seed.txt', 'w') as fw:
     json.dump(pygame.font.get_fonts(), fw)
 
-"""Копирование изображений в озу и присваивание им названий"""
+"""Копирование изображений в ОЗУ и присваивание им названий"""
 """ Ресурсы"""
 coal = pygame.image.load("resources/Coal.png")
 copper = pygame.image.load("resources/Copper ore.png")
@@ -179,6 +190,7 @@ fac_surf = pygame.image.load("buildings/factory.png")
 lab_surf = pygame.image.load("buildings/laboratory.png")
 home_surf = pygame.image.load("buildings/home.png")
 mine_surf = pygame.image.load("buildings/mine.png")
+storage_surf = pygame.image.load("buildings/storage.png")
 
 """GUI"""
 menu_surf = pygame.image.load("GUI/menu.png")
@@ -220,6 +232,8 @@ while run:
         menu = 3
     if keys[pygame.K_5]:
         menu = 4
+    if keys[pygame.K_6]:
+        menu = 5
     if keys[pygame.K_DELETE]:
         menu = 29
     if keys[pygame.K_ESCAPE]:
@@ -270,6 +284,9 @@ while run:
             elif map_arr[i][j] == 13:
                 """отрисовка дерева"""
                 screen.blit(tree, (j * move, (i + 4) * move))
+            elif map_arr[i][j] == 14:
+                """отрисовка склада"""
+                screen.blit(storage_surf, (j * move, (i + 4) * move))
 
     mouse_rect(lx, ly)
     pygame.draw.rect(screen, pygame.Color("red"), (x_cap, y_cap, move * 5 + 3, move * 5 + 3), 1)        # красный квадрат
