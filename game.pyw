@@ -191,6 +191,7 @@ lab_surf = pygame.image.load("buildings/laboratory.png")
 home_surf = pygame.image.load("buildings/home.png")
 mine_surf = pygame.image.load("buildings/mine.png")
 storage_surf = pygame.image.load("buildings/storage.png")
+sawmill = pygame.image.load("buildings/sawmill.png")
 
 """GUI"""
 menu_surf = pygame.image.load("GUI/menu.png")
