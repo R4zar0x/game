@@ -5,11 +5,14 @@ import pygame
 import pygame.freetype              # использование других шрифтов
 import json
 import tfg
+from win32api import GetSystemMetrics
+
 
 pygame.init()  # инициализация пайгейма
 
 pygame.font.init()
-width, height = 1366, 768    # 924, 693; 1366, 768; 1920, 1080
+
+width, height = GetSystemMetrics(0), GetSystemMetrics(1)    # 924, 693; 1366, 768; 1920, 1080
 size_py = (width, height)
 screen = pygame.display.set_mode(size_py, pygame.FULLSCREEN)
 clock = pygame.time.Clock()
@@ -103,8 +106,8 @@ def gui():
     screen.blit(delete, (width - 90, 0))  # width - 88 - 2
     screen.blit(esc_surf, (width - 46, 0))  # width - 44 - 2
     screen.blit(rec, (menu * 44, 0))
-    date = f2.render(f"Сезон: {week}/{month}", True, pygame.Color("black"))
-    d_year = f2.render(f"Год: {year}", True, pygame.Color("black"))
+    date = f2.render(f"Неделя: {week}/{month}", True, pygame.Color("black"))
+    d_year = f2.render(f"Месяц: {year}", True, pygame.Color("black"))
     screen.blit(date, (width - 160, 5))
     screen.blit(d_year, (width - 160, 25))
 
