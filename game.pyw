@@ -25,7 +25,6 @@ move = 11  # ширина клетки
 
 week = 1
 month = 1
-year = 0
 map_arr = []
 lx, ly = 0, 0           # округленные координаты
 x_cap, y_cap = 0, 0            # координаты левого верхнего угла на поле работ
@@ -106,10 +105,11 @@ def gui():
     screen.blit(delete, (width - 90, 0))  # width - 88 - 2
     screen.blit(esc_surf, (width - 46, 0))  # width - 44 - 2
     screen.blit(rec, (menu * 44, 0))
-    date = f2.render(f"Неделя: {week}/{month}", True, pygame.Color("black"))
-    d_year = f2.render(f"Месяц: {year}", True, pygame.Color("black"))
-    screen.blit(date, (width - 160, 5))
-    screen.blit(d_year, (width - 160, 25))
+    date = f2.render(f"Неделя: {week}/4", True, pygame.Color("black"))
+    d_year = f2.render(f"Месяц: {month}/12", True, pygame.Color("black"))
+    left_canvas_for_date = width - 170
+    screen.blit(date, (left_canvas_for_date, 5))
+    screen.blit(d_year, (left_canvas_for_date, 25))
 
 
 def word_wrap(surf, text, fon, color=pygame.Color("dimgray")):              # разбивает одну строку на нескоько чтобы поместилось в окно, вызываемое на ПКМ
