@@ -6,6 +6,7 @@ import pygame.freetype              # использование других ш
 import json
 import tfg
 from win32api import GetSystemMetrics
+from date_function import give_week_month
 
 
 pygame.init()  # инициализация пайгейма
@@ -23,8 +24,8 @@ font = pygame.freetype.Font("Cony Light.otf", 20)
 fps = 60
 move = 11  # ширина клетки
 
-week = 1
-month = 1
+days_counter = 1
+days_counter_fraction = 0
 map_arr = []
 lx, ly = 0, 0           # округленные координаты
 x_cap, y_cap = 0, 0            # координаты левого верхнего угла на поле работ
@@ -105,6 +106,7 @@ def gui():
     screen.blit(delete, (width - 90, 0))  # width - 88 - 2
     screen.blit(esc_surf, (width - 46, 0))  # width - 44 - 2
     screen.blit(rec, (menu * 44, 0))
+    week, month = give_week_month()
     date = f2.render(f"Неделя: {week}/4", True, pygame.Color("black"))
     d_year = f2.render(f"Месяц: {month}/12", True, pygame.Color("black"))
     left_canvas_for_date = width - 170
@@ -209,7 +211,7 @@ delete = pygame.image.load("GUI/trash.png")
 
 run = True
 while run:
-
+    days_counter_fraction += 1
     events = pygame.event.get()         # кортеж событий
     for event in events:
         if event.type == pygame.QUIT:       # событие нажатия крестика выхода
