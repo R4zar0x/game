@@ -106,7 +106,8 @@ def gui():
     screen.blit(delete, (width - 90, 0))  # width - 88 - 2
     screen.blit(esc_surf, (width - 46, 0))  # width - 44 - 2
     screen.blit(rec, (menu * 44, 0))
-    week, month = give_week_month()
+    # week, month = give_week_month()
+    week = month = 1
     date = f2.render(f"Неделя: {week}/4", True, pygame.Color("black"))
     d_year = f2.render(f"Месяц: {month}/12", True, pygame.Color("black"))
     left_canvas_for_date = width - 170
