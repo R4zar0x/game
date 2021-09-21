@@ -24,7 +24,10 @@ font = pygame.freetype.Font("Cony Light.otf", 20)
 fps = 60
 move = 11  # ширина клетки
 
-week = month = 1
+speed = 1
+x = 180
+turn_position = 0
+week = month = year = 1
 days_counter = 1
 days_counter_fraction = 0
 map_arr = []
@@ -36,6 +39,8 @@ inf_pos = 0  # не помню что это
 zone = True  # наличие курсора в зоне карты
 lb = False  # не помню, вроде бесполезная херня
 rb_info = False  # нажатие ПКМ
+turn_checker = True     #Определяет, нужно ли двигаться иконке с датой
+
 
 
 def menu_num():  # обработка меню выбора
@@ -101,7 +106,7 @@ def mouse_rect(mx, my):
         pygame.draw.rect(screen, pygame.Color("dimgray"), (mx, my, move + 1, move + 1), 1)  # dimgray
 
 
-def gui(week, month):
+def gui(week, month, year, x):
     """ интерфейс, его отрисовка"""
     screen.blit(menu_surf, (0, 0))
     screen.blit(delete, (width - 90, 0))  # width - 88 - 2
@@ -111,9 +116,11 @@ def gui(week, month):
     # week = month = 1
     week_string = f2.render(f"Неделя: {week}/4", True, pygame.Color("black"))
     month_string = f2.render(f"Месяц: {month}/12", True, pygame.Color("black"))
-    left_canvas_for_date = width - 170
+    year_string = f2.render(f'Год: {year}', True, pygame.Color('black'))
+    left_canvas_for_date = width - x
     screen.blit(week_string, (left_canvas_for_date, 5))
     screen.blit(month_string, (left_canvas_for_date, 25))
+    screen.blit(year_string, (left_canvas_for_date - 50, 15))
 
 
 def word_wrap(surf, text, fon, color=pygame.Color("dimgray")):              # разбивает одну строку на нескоько чтобы поместилось в окно, вызываемое на ПКМ
@@ -213,8 +220,17 @@ delete = pygame.image.load("GUI/trash.png")
 
 run = True
 while run:
+    if turn_checker == True:
+        if turn_position == 0:
+            x += speed
+        else:
+            x -= speed
+        if width - x < 350:
+            turn_position = 1
+        elif x < 220:
+            turn_position = 0
     days_counter_fraction += 1
-    if days_counter_fraction == 1:# * 180:
+    if days_counter_fraction == 1 * 80:
         print(days_counter)
         days_counter += 1
         days_counter_fraction = 0
@@ -224,6 +240,9 @@ while run:
     if week > 4:
         month += 1
         week = 1
+    if month > 12:
+        year += 1
+        month = 1
     events = pygame.event.get()         # кортеж событий
     for event in events:
         if event.type == pygame.QUIT:       # событие нажатия крестика выхода
@@ -265,7 +284,7 @@ while run:
 
     screen.fill(pygame.Color('white'))              # заполнения экрана белым
     greed()             # отрисовка сетки
-    gui(week, month)               # менюшка
+    gui(week, month, year, x)               # менюшка
 
     for i in range(ty):                 # отрисовка значков на карте
         for j in range(tx):
