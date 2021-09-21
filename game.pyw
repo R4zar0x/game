@@ -6,7 +6,6 @@ import pygame.freetype              # использование других ш
 import json
 import tfg
 from win32api import GetSystemMetrics
-from date_function import give_week_month
 
 
 pygame.init()  # инициализация пайгейма
@@ -101,16 +100,14 @@ def mouse_rect(mx, my):
         pygame.draw.rect(screen, pygame.Color("dimgray"), (mx, my, move + 1, move + 1), 1)  # dimgray
 
 
-def gui(week, month):
+def gui(weeks, months):
     """ интерфейс, его отрисовка"""
     screen.blit(menu_surf, (0, 0))
     screen.blit(delete, (width - 90, 0))  # width - 88 - 2
     screen.blit(esc_surf, (width - 46, 0))  # width - 44 - 2
     screen.blit(rec, (menu * 44, 0))
-    # week, month = give_week_month()
-    # week = month = 1
-    week_string = f2.render(f"Неделя: {week}/4", True, pygame.Color("black"))
-    month_string = f2.render(f"Месяц: {month}/12", True, pygame.Color("black"))
+    week_string = f2.render(f"Неделя: {weeks}/4", True, pygame.Color("black"))
+    month_string = f2.render(f"Месяц: {months}/12", True, pygame.Color("black"))
     left_canvas_for_date = width - 170
     screen.blit(week_string, (left_canvas_for_date, 5))
     screen.blit(month_string, (left_canvas_for_date, 25))
@@ -214,7 +211,7 @@ delete = pygame.image.load("GUI/trash.png")
 run = True
 while run:
     days_counter_fraction += 1
-    if days_counter_fraction == 1:# * 180:
+    if days_counter_fraction == 1:  # * 180:
         print(days_counter)
         days_counter += 1
         days_counter_fraction = 0
