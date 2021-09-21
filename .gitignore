@@ -1,1 +1,3 @@
 seed.txt
+.gitignore
+__pycache__
