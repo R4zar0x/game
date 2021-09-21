@@ -127,12 +127,12 @@ def word_wrap(surf, text, fon, color=pygame.Color("dimgray")):              # р
     words = text.split(' ')
     wid, heig = surf.get_size()     # 264, 308 (ширина, высота), эти значения на всякий случай, размер окна, вызываемого на ПКМ
     line_spacing = fon.get_sized_height() + 2
-    x, y = 1127, 63 + line_spacing
+    x, y = width - 239, 63 + line_spacing
     space = fon.get_rect(' ')
     for word in words:
         bounds = fon.get_rect(word)
         if x + bounds.width + bounds.x >= wid:
-            x, y = 1117, y + line_spacing
+            x, y = width - 249, y + line_spacing
         if x + bounds.width + bounds.x >= wid:
             raise ValueError("word too wide for the surface")
         if y + bounds.height - bounds.y >= heig:
@@ -140,7 +140,6 @@ def word_wrap(surf, text, fon, color=pygame.Color("dimgray")):              # р
         fon.render_to(surf, (x, y), None, color)
         x += bounds.width + space.width
     return x, y
-
 
 def info(inf, n_txt):               # меню вызываемое на ПКМ
     if inf:
