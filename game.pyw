@@ -6,7 +6,6 @@ import pygame.freetype              # использование других ш
 import json
 import tfg
 from win32api import GetSystemMetrics
-from date_function import give_week_month
 
 
 pygame.init()  # инициализация пайгейма
