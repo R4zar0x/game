@@ -240,7 +240,7 @@ while meru:
     if menu_title_position[0] < x_pos < menu_title_position[0] + button_size[0] and \
             menu_title_position[1] < y_pos < menu_title_position[1] + button_size[1]:
         # if :
-        # print('success')
+        print('success')
     clock.tick(fps)
     pygame.display.flip()
 
