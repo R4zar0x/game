@@ -10,6 +10,7 @@ from tkinter import *
 from tkinter import ttk
 from game import main
 
+
 def first_menu_function():
     difficulty_list = ['Легко', 'Средняя сложность', 'Pro уровень']
     computer_performance_list = ['Низкие', 'Средние', 'Высокие']
@@ -39,17 +40,17 @@ def first_menu_function():
     difficulty_text.place(relx=.5, rely=.3, anchor='center')
 
     difficulty_list_vidget = ttk.Combobox(values=difficulty_list)
-    difficulty_list_vidget.place(width = 200, relx=.5, rely=.40, anchor='center')
+    difficulty_list_vidget.place(width=200, relx=.5, rely=.40, anchor='center')
     difficulty_list_vidget.current(1)
 
     computer_performance_text = Label(root, text='Выберите настройки\nграфики: ', bg='white', font='Times 16')
     computer_performance_text.place(relx=.5, rely=.55, anchor='center')
 
     computer_performance_list_vidget = ttk.Combobox(values=computer_performance_list)
-    computer_performance_list_vidget.place(width = 200, relx=.5, rely=.67, anchor='center')
+    computer_performance_list_vidget.place(width=200, relx=.5, rely=.67, anchor='center')
     computer_performance_list_vidget.current(2)
 
-    btn_confirm = Button(root, text = 'Подтвердить', bg = '#ff1400', command = btn_confirm_function, font = 'Times 18')
+    btn_confirm = Button(root, text='Подтвердить', bg='#ff1400', command=btn_confirm_function, font='Times 18')
     btn_confirm.place(relx=0.5, rely=0.85, anchor='center')
 
     root.mainloop()
