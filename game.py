@@ -215,6 +215,35 @@ esc_surf = pygame.image.load("GUI/esc.png")
 rec = pygame.image.load("GUI/yrect.png")
 delete = pygame.image.load("GUI/trash.png")
 
+"""Menu"""
+cell = pygame.image.load("GUI/mm.png")
+
+x_pos = 1
+y_pos = 1
+# y = -x * 0.5 - 3
+# y = -x * 2 - 6
+
+meru = True
+while meru:
+    events = pygame.event.get()  # кортеж событий
+    for event in events:
+        if event.type == pygame.MOUSEMOTION:  # обработка движения мыши
+            x_pos = event.pos[0]
+            y_pos = event.pos[1]
+
+    screen.fill(pygame.Color("white"))
+    button_size = (367, 90)
+    menu_title_position = (50, 50)
+    screen.blit(cell, menu_title_position)
+
+    if menu_title_position[0] < x_pos < menu_title_position[0] + button_size[0] and \
+            menu_title_position[1] < y_pos < menu_title_position[1] + button_size[1]:
+        if :
+        print('success')
+    clock.tick(fps)
+    pygame.display.flip()
+
+
 run = True
 while run:
     if turn_checker:
