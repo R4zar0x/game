@@ -6,7 +6,7 @@ import pygame.freetype              # использование других ш
 import json
 import tfg
 from win32api import GetSystemMetrics
-
+# test
 
 pygame.init()  # инициализация пайгейма
 
