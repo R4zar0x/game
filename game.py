@@ -95,8 +95,7 @@ def greed():
         pygame.draw.aaline(screen, pygame.Color("gray"), (xg, move * 4), (xg, height))  # вертикальные полосы
     for yg in range(move * 4, height, move):
         pygame.draw.aaline(screen, pygame.Color("gray"), (0, yg), (width, yg))  # горизонтальные полосы
-    pygame.draw.aaline(screen, pygame.Color("dimgray"), (0, 44), (width, 44),
-                    1)  # верхняя темная линия (под меню выбора)
+    pygame.draw.aaline(screen, pygame.Color("dimgray"), (0, 44), (width, 44), 1)  # верхняя темная линия (под меню выбора)
 
 
 def mouse_rect(mx, my):
@@ -127,19 +126,20 @@ def word_wrap(surf, text, fon, color=pygame.Color("dimgray")):              # р
     words = text.split(' ')
     wid, heig = surf.get_size()     # 264, 308 (ширина, высота), эти значения на всякий случай, размер окна, вызываемого на ПКМ
     line_spacing = fon.get_sized_height() + 2
-    x, y = width - 239, 63 + line_spacing
+    x_info, y_info = width - 239, 63 + line_spacing
     space = fon.get_rect(' ')
     for word in words:
         bounds = fon.get_rect(word)
-        if x + bounds.width + bounds.x >= wid:
-            x, y = width - 249, y + line_spacing
-        if x + bounds.width + bounds.x >= wid:
+        if x_info + bounds.width + bounds.x >= wid:
+            x_info, y_info = width - 249, y_info + line_spacing
+        if x_info + bounds.width + bounds.x >= wid:
             raise ValueError("word too wide for the surface")
-        if y + bounds.height - bounds.y >= heig:
+        if y_info + bounds.height - bounds.y >= heig:
             raise ValueError("text to long for the surface")
-        fon.render_to(surf, (x, y), None, color)
-        x += bounds.width + space.width
-    return x, y
+        fon.render_to(surf, (x_info, y_info), None, color)
+        x_info += bounds.width + space.width
+    return x_info, y_info
+
 
 def info(inf, n_txt):               # меню вызываемое на ПКМ
     if inf:
@@ -216,9 +216,38 @@ esc_surf = pygame.image.load("GUI/esc.png")
 rec = pygame.image.load("GUI/yrect.png")
 delete = pygame.image.load("GUI/trash.png")
 
+"""Menu"""
+cell = pygame.image.load("GUI/mm.png")
+
+x_pos = 1
+y_pos = 1
+# y = -x * 0.5 - 3
+# y = -x * 2 - 6
+
+meru = True
+while meru:
+    events = pygame.event.get()  # кортеж событий
+    for event in events:
+        if event.type == pygame.MOUSEMOTION:  # обработка движения мыши
+            x_pos = event.pos[0]
+            y_pos = event.pos[1]
+
+    screen.fill(pygame.Color("white"))
+    button_size = (367, 90)
+    menu_title_position = (50, 50)
+    screen.blit(cell, menu_title_position)
+
+    if menu_title_position[0] < x_pos < menu_title_position[0] + button_size[0] and \
+            menu_title_position[1] < y_pos < menu_title_position[1] + button_size[1]:
+        # if :
+        # print('success')
+    clock.tick(fps)
+    pygame.display.flip()
+
+
 run = True
 while run:
-    if turn_checker == True:
+    if turn_checker:
         if turn_position == 0:
             x += speed
         else:
