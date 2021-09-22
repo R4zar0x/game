@@ -38,8 +38,7 @@ inf_pos = 0  # Запоминание ячейки, о которой нужно
 zone = True  # наличие курсора в зоне карты
 lb = False  # не помню, вроде бесполезная херня
 rb_info = False  # нажатие ПКМ
-turn_checker = True     #Определяет, нужно ли двигаться иконке с датой
-
+turn_checker = True     # Определяет, нужно ли двигаться иконке с датой
 
 
 def menu_num():  # обработка меню выбора
@@ -104,7 +103,7 @@ def mouse_rect(mx, my):
         pygame.draw.rect(screen, pygame.Color("dimgray"), (mx, my, move + 1, move + 1), 1)  # dimgray
 
 
-def gui(week, month, year, x):
+def gui(weekk, monthh, yearr, x_in):
     """ интерфейс, его отрисовка"""
     screen.blit(menu_surf, (0, 0))
     screen.blit(delete, (width - 90, 0))  # width - 88 - 2
@@ -112,10 +111,10 @@ def gui(week, month, year, x):
     screen.blit(rec, (menu * 44, 0))
     # week, month = give_week_month()
     # week = month = 1
-    week_string = f2.render(f"Неделя: {week}/4", True, pygame.Color("black"))
-    month_string = f2.render(f"Месяц: {month}/12", True, pygame.Color("black"))
-    year_string = f2.render(f'Год: {year}', True, pygame.Color('black'))
-    left_canvas_for_date = width - x
+    week_string = f2.render(f"Неделя: {weekk}/4", True, pygame.Color("black"))
+    month_string = f2.render(f"Месяц: {monthh}/12", True, pygame.Color("black"))
+    year_string = f2.render(f'Год: {yearr}', True, pygame.Color('black'))
+    left_canvas_for_date = width - x_in
     screen.blit(week_string, (left_canvas_for_date, 5))
     screen.blit(month_string, (left_canvas_for_date, 25))
     screen.blit(year_string, (left_canvas_for_date - 50, 15))
