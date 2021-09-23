@@ -31,6 +31,7 @@ run = False
 fps = 60
 move = 11  # ширина клетки
 
+difficulty = 0
 speed = 1
 x = 180
 turn_position = 0
@@ -243,12 +244,14 @@ y_pos = 1
 
 def text_of_first_menu():
     start_text = f_start_in_first_menu.render('Старт', True, pygame.Color('black'))
-    exit_text = f_small_btn_in_first_menu.render('Настройки', True, pygame.Color('black'))
+    settings_text = f_small_btn_in_first_menu.render('Настройки', True, pygame.Color('black'))
+    exit_text = f_small_btn_in_first_menu.render('Выход', True, pygame.Color('black'))
     screen.blit(start_text, (190, 70))
-    screen.blit(exit_text, (152, 182))
+    screen.blit(settings_text, (152, 182))
+    screen.blit(exit_text, (170, 364))
 
 
-def text_in_settings_page():
+def text_in_settings_page(difficulty):
     title_text = f_start_in_first_menu.render('Настройки', True, pygame.Color('black'))
     difficulty_text = f_small_btn_in_first_menu.render('Сложность', True, pygame.Color('black'))
     exit_text = f_small_btn_in_first_menu.render('Выход', True, pygame.Color('black'))
@@ -256,6 +259,14 @@ def text_in_settings_page():
     screen.blit(difficulty_text, (144, 182))
     screen.blit(exit_text, (170, 274))
     
+
+def is_cursor_in_sml_button(num_of_button):
+    if small_title_pos[num_of_button][0] < x_pos < small_title_pos[num_of_button][0] + small_title_btn_size[0] and small_title_pos[num_of_button][1] < y_pos < small_title_pos[num_of_button][1] + small_title_btn_size[1]:
+        result = True
+    else:
+        result = False
+    return result
+
 
 menu_title_btn_size = (367, 90)
 small_title_btn_size = (291, 71)
@@ -292,8 +303,7 @@ while meru:
                 menu_title_pos[1] < y_pos < menu_title_pos[1] + menu_title_btn_size[1]:
             run = True
             break
-        if small_title_pos[0][0] < x_pos < small_title_pos[0][0] + small_title_btn_size[0] and \
-                small_title_pos[0][1] < y_pos < small_title_pos[0][1] + small_title_btn_size[1]:
+        if is_cursor_in_sml_button(0):
             settings_flag = True
             #############################################################################
             while settings_flag:
@@ -304,21 +314,21 @@ while meru:
                 screen.blit(small_cell, (small_title_pos[0][0] + small_title_btn_size[0] + 50, small_title_pos[0][1]))
                 screen.blit(small_cell, small_title_pos[1])
 
-                text_in_settings_page()
+                text_in_settings_page(difficulty)
                 for event in events_settings:
                     if event.type == pygame.MOUSEMOTION:  # обработка движения мыши
                         x_pos = event.pos[0]
                         y_pos = event.pos[1]
                 if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-                    if small_title_pos[1][0] < x_pos < small_title_pos[1][0] + small_title_btn_size[0] and \
-                small_title_pos[1][1] < y_pos < small_title_pos[1][1] + small_title_btn_size[1]:
+                    if is_cursor_in_sml_button(1):
                         settings_flag = False
                         break
                 clock.tick(fps)
                 pygame.display.flip()
                         #######################################################################
             print('first small button was pressed.')
-
+        elif is_cursor_in_sml_button(2):
+            break
 
         # print('just rect')
 
