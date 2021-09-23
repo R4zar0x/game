@@ -232,11 +232,11 @@ else:
     menu_image = pygame.image.load(f"GUI/1920x1080/castle.png")
 
 
-
 x_pos = 1
 y_pos = 1
 # y = -x * 0.5 - 3
 # y = -x * 2 - 6
+
 
 def text_of_first_menu():
     start_text = f_start_in_first_menu.render('Старт', True, pygame.Color('black'))
