@@ -123,8 +123,7 @@ def gui(weekk, monthh, yearr, x_in):
     screen.blit(year_string, (left_canvas_for_date - 50, 15))
 
 
-def word_wrap(surf, text, fon, color=pygame.Color(
-    "dimgray")):  # разбивает одну строку на нескоько чтобы поместилось в окно, вызываемое на ПКМ
+def word_wrap(surf, text, fon, color=pygame.Color("dimgray")):  # разбивает одну строку на нескоько чтобы поместилось в окно, вызываемое на ПКМ
     fon.origin = True
     words = text.split(' ')
     wid, heig = surf.get_size()  # 264, 308 (ширина, высота), эти значения на всякий случай, размер окна, вызываемого на ПКМ
@@ -220,11 +219,21 @@ delete = pygame.image.load("GUI/trash.png")
 
 """Menu"""
 cell = pygame.image.load("GUI/mm.png")
+small_cell = pygame.image.load("GUI/menu_min.png")
+menu_image = pygame.image.load(f"GUI/{width}x{height}/castle.png")
 
 x_pos = 1
 y_pos = 1
 # y = -x * 0.5 - 3
 # y = -x * 2 - 6
+
+menu_title_btn_size = (367, 90)
+small_title_btn_size = (291, 71)
+menu_title_pos = (50, 50)
+small_title_pos = [(50, 160), (50, 251), (50, 342)]
+
+menu_title_relativ_null = (menu_title_pos[0] + menu_title_btn_size[0], menu_title_btn_size[1])
+
 
 meru = True
 while meru:
@@ -233,18 +242,18 @@ while meru:
         if event.type == pygame.MOUSEMOTION:  # обработка движения мыши
             x_pos = event.pos[0]
             y_pos = event.pos[1]
+            mouse_relativ_x = x_pos - menu_title_relativ_null[0]
+            mouse_relativ_y = menu_title_relativ_null[1] - y_pos
 
-    screen.fill(pygame.Color("white"))
-    big_button_size = (367, 90)
-    small_button_size = (291, 71)
-    menu_title_pos = (50, 50)
-    small_title_pos = [(50, 160), (50, 251), (50, 342)]
+    screen.blit(menu_image, (0, 0))
     screen.blit(cell, menu_title_pos)
 
-    if menu_title_pos[0] < x_pos < menu_title_pos[0] + big_button_size[0] and \
-            menu_title_pos[1] < y_pos < menu_title_pos[1] + big_button_size[1]:
+    for i in range(len(small_title_pos)):
+        screen.blit(small_cell, small_title_pos[i])
 
-        
+    if menu_title_pos[0] < x_pos < menu_title_pos[0] + menu_title_btn_size[0] and \
+            menu_title_pos[1] < y_pos < menu_title_pos[1] + menu_title_btn_size[1]:
+
         print('just rect')
 
     clock.tick(fps)
@@ -291,8 +300,7 @@ while run:
             # нажатие ЛКМ pygame.MOUSEBUTTONDOWN - событие нажатия клавиши, event.button == 1 - клавиша ЛКМ
             lb = True
             menu_num()  #
-            if x_cap < event.pos[0] < x_cap + move * 5 + 1 and y_cap < event.pos[
-                1] < y_cap + move * 5 + 1:  # курсор внутри красного квадрата
+            if x_cap < event.pos[0] < x_cap + move * 5 + 1 and y_cap < event.pos[1] < y_cap + move * 5 + 1:  # курсор внутри красного квадрата
                 add()  # вызов функции
         elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 3:  # проверка нажатия ПКМ
             rb_info = not rb_info  # включение меню
