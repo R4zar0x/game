@@ -1,6 +1,8 @@
 import random
 from os import environ
 
+from pygame.event import event_name
+
 environ['PYGAME_HIDE_SUPPORT_PROMPT'] = '1'  # отключает приветствие от создателей пайгейма
 import pygame
 import pygame.freetype  # использование других шрифтов
@@ -240,9 +242,19 @@ y_pos = 1
 
 def text_of_first_menu():
     start_text = f_start_in_first_menu.render('Старт', True, pygame.Color('black'))
-    end_text = f_small_btn_in_first_menu.render('Выход', True, pygame.Color('black'))
+    exit_text = f_small_btn_in_first_menu.render('Настройки', True, pygame.Color('black'))
     screen.blit(start_text, (190, 70))
-    screen.blit(end_text, (175, 184))
+    screen.blit(exit_text, (152, 182))
+
+
+def text_in_settings_page():
+    title_text = f_start_in_first_menu.render('Настройки', True, pygame.Color('black'))
+    difficulty_text = f_small_btn_in_first_menu.render('Сложность', True, pygame.Color('black'))
+    exit_text = f_small_btn_in_first_menu.render('Выход', True, pygame.Color('black'))
+    screen.blit(title_text, (147, 70))
+    screen.blit(difficulty_text, (144, 182))
+    screen.blit(exit_text, (170, 274))
+    
 
 menu_title_btn_size = (367, 90)
 small_title_btn_size = (291, 71)
@@ -251,6 +263,8 @@ small_title_pos = [(50, 160), (50, 251), (50, 342)]
 
 buttons_pos_and_size = (menu_title_pos, menu_title_btn_size, small_title_pos, small_title_btn_size)
 
+settings_title_pos = (50, 50)
+settings_title_size = (367, 90)
 
 # menu_title_relativ_null = (menu_title_pos[0] + menu_title_btn_size[0], menu_title_btn_size[1])
 
@@ -279,11 +293,33 @@ while meru:
             break
         if small_title_pos[0][0] < x_pos < small_title_pos[0][0] + small_title_btn_size[0] and \
                 small_title_pos[0][1] < y_pos < small_title_pos[0][1] + small_title_btn_size[1]:
+            settings_flag = True
+            #############################################################################
+            while settings_flag:
+                events_settings = pygame.event.get()
+                screen.blit(menu_image, (0, 0))
+                screen.blit(cell, settings_title_pos)
+                screen.blit(small_cell, small_title_pos[0])
+                screen.blit(small_cell, (small_title_pos[0][0] + small_title_btn_size[0] + 50, small_title_pos[0][1]))
+                screen.blit(small_cell, small_title_pos[1])
+
+                text_in_settings_page()
+                for event in events_settings:
+                    if event.type == pygame.MOUSEMOTION:  # обработка движения мыши
+                        x_pos = event.pos[0]
+                        y_pos = event.pos[1]
+                if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                    if small_title_pos[1][0] < x_pos < small_title_pos[1][0] + small_title_btn_size[0] and \
+                small_title_pos[1][1] < y_pos < small_title_pos[1][1] + small_title_btn_size[1]:
+                        settings_flag = False
+                        break
+                clock.tick(fps)
+                pygame.display.flip()
+                        #######################################################################
             print('first small button was pressed.')
-            break
 
 
-        print('just rect')
+        # print('just rect')
 
     clock.tick(fps)
     pygame.display.flip()
@@ -295,7 +331,7 @@ while run:
             x += speed
         else:
             x -= speed
-        if width - x < 350:
+        if width - x < 400:
             turn_position = 1
         elif x < 220:
             turn_position = 0
