@@ -221,7 +221,7 @@ delete = pygame.image.load("GUI/trash.png")
 cell = pygame.image.load("GUI/mm.png")
 small_cell = pygame.image.load("GUI/menu_min.png")
 menu_image = pygame.image.load(f"GUI/{width}x{height}/castle.png")
-
+#Comment
 x_pos = 1
 y_pos = 1
 # y = -x * 0.5 - 3
