@@ -20,7 +20,11 @@ screen = pygame.display.set_mode(size_py, pygame.FULLSCREEN)
 clock = pygame.time.Clock()
 f1 = pygame.font.Font("Cony Light.otf", 21)
 f2 = pygame.font.Font("Cony Light.otf", 16)
+f_start_in_first_menu = pygame.font.Font('Cony Light.otf', 54)
+f_small_btn_in_first_menu = pygame.font.Font('Cony Light.otf', 32)
 font = pygame.freetype.Font("Cony Light.otf", 20)
+
+run = False
 
 fps = 60
 move = 11  # ширина клетки
@@ -234,12 +238,21 @@ y_pos = 1
 # y = -x * 0.5 - 3
 # y = -x * 2 - 6
 
+def text_of_first_menu():
+    start_text = f_start_in_first_menu.render('Старт', True, pygame.Color('black'))
+    end_text = f_small_btn_in_first_menu.render('Выход', True, pygame.Color('black'))
+    screen.blit(start_text, (190, 70))
+    screen.blit(end_text, (175, 184))
+
 menu_title_btn_size = (367, 90)
 small_title_btn_size = (291, 71)
 menu_title_pos = (50, 50)
 small_title_pos = [(50, 160), (50, 251), (50, 342)]
 
-menu_title_relativ_null = (menu_title_pos[0] + menu_title_btn_size[0], menu_title_btn_size[1])
+buttons_pos_and_size = (menu_title_pos, menu_title_btn_size, small_title_pos, small_title_btn_size)
+
+
+# menu_title_relativ_null = (menu_title_pos[0] + menu_title_btn_size[0], menu_title_btn_size[1])
 
 
 meru = True
@@ -249,24 +262,33 @@ while meru:
         if event.type == pygame.MOUSEMOTION:  # обработка движения мыши
             x_pos = event.pos[0]
             y_pos = event.pos[1]
-            mouse_relativ_x = x_pos - menu_title_relativ_null[0]
-            mouse_relativ_y = menu_title_relativ_null[1] - y_pos
+            # mouse_relativ_x = x_pos - menu_title_relativ_null[0]
+            # mouse_relativ_y = menu_title_relativ_null[1] - y_pos
 
     screen.blit(menu_image, (0, 0))
     screen.blit(cell, menu_title_pos)
 
     for i in range(len(small_title_pos)):
         screen.blit(small_cell, small_title_pos[i])
+    text_of_first_menu()
 
-    if menu_title_pos[0] < x_pos < menu_title_pos[0] + menu_title_btn_size[0] and \
-            menu_title_pos[1] < y_pos < menu_title_pos[1] + menu_title_btn_size[1]:
+    if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+        if menu_title_pos[0] < x_pos < menu_title_pos[0] + menu_title_btn_size[0] and \
+                menu_title_pos[1] < y_pos < menu_title_pos[1] + menu_title_btn_size[1]:
+            run = True
+            break
+        if small_title_pos[0][0] < x_pos < small_title_pos[0][0] + small_title_btn_size[0] and \
+                small_title_pos[0][1] < y_pos < small_title_pos[0][1] + small_title_btn_size[1]:
+            print('first small button was pressed.')
+            break
+
 
         print('just rect')
 
     clock.tick(fps)
     pygame.display.flip()
 
-run = True
+
 while run:
     if turn_checker:
         if turn_position == 0:
