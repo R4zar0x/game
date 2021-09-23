@@ -222,13 +222,13 @@ cell = pygame.image.load("GUI/mm.png")
 small_cell = pygame.image.load("GUI/menu_min.png")
 if (width == 1366 and height == 768) or (width == 1920 and width == 1080):
     menu_image = pygame.image.load(f"GUI/{width}x{height}/castle.png")
-elif width < 1366 or height < 768: #or we must use 'and'
+elif width < 1366 or height < 768:      # or we must use 'and'
     menu_image = pygame.image.load(f"GUI/1366x768/castle.png")
 else:
     menu_image = pygame.image.load(f"GUI/1920x1080/castle.png")
 
 
-#Comment
+
 x_pos = 1
 y_pos = 1
 # y = -x * 0.5 - 3
