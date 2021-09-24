@@ -31,6 +31,7 @@ run = False
 fps = 60
 move = 11  # ширина клетки
 
+difficulty_show = 0
 difficulty = 0
 speed = 1
 x = 180
@@ -259,8 +260,9 @@ def text_in_settings_page(difficulty):
     screen.blit(exit_text, (170, 274))
     
 
-def is_cursor_in_sml_button(num_of_button):
-    if small_title_pos[num_of_button][0] < x_pos < small_title_pos[num_of_button][0] + small_title_btn_size[0] and small_title_pos[num_of_button][1] < y_pos < small_title_pos[num_of_button][1] + small_title_btn_size[1]:
+def is_cursor_in_sml_button(position, size):
+    # if small_title_pos[num_of_button][0] < x_pos < small_title_pos[num_of_button][0] + small_title_btn_size[0] and small_title_pos[num_of_button][1] < y_pos < small_title_pos[num_of_button][1] + small_title_btn_size[1]:
+    if position[0] < x_pos < position[0] + size[0] and position[1] < y_pos < position[1] + size[1]:
         result = True
     else:
         result = False
@@ -280,6 +282,7 @@ settings_title_size = (367, 90)
 # menu_title_relativ_null = (menu_title_pos[0] + menu_title_btn_size[0], menu_title_btn_size[1])
 
 
+difficulty_show = 0
 meru = True
 while meru:
     events = pygame.event.get()  # кортеж событий
@@ -302,7 +305,7 @@ while meru:
                 menu_title_pos[1] < y_pos < menu_title_pos[1] + menu_title_btn_size[1]:
             run = True
             break
-        if is_cursor_in_sml_button(0):
+        if is_cursor_in_sml_button(small_title_pos[0], small_title_btn_size):
             settings_flag = True
             #############################################################################
             while settings_flag:
@@ -310,8 +313,25 @@ while meru:
                 screen.blit(menu_image, (0, 0))
                 screen.blit(cell, settings_title_pos)
                 screen.blit(small_cell, small_title_pos[0])
-                screen.blit(small_cell, (small_title_pos[0][0] + small_title_btn_size[0] + 50, small_title_pos[0][1]))
+                main_difficulty_btn_pos = (small_title_pos[0][0] + small_title_btn_size[0] + 50, small_title_pos[0][1])
+                screen.blit(small_cell, main_difficulty_btn_pos)
                 screen.blit(small_cell, small_title_pos[1])
+                if difficulty_show == 1:
+                    difficulty_list = [1]
+                    for i in range(len(difficulty_list)):
+                        difficulty_btn_pos = (small_title_pos[0][0] + small_title_btn_size[0] + 50, small_title_pos[1][1])
+                        screen.blit(small_cell, difficulty_btn_pos)
+                    for event in events_settings:
+                        if event.type == pygame.MOUSEMOTION:
+                            x_pos = event.pos[0]
+                            y_pos = event.pos[1]
+                    if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                        # if small_title_pos[1][0] + small_title_btn_size[0] + 50 < x_pos < small_title_pos[1][0] + small_title_btn_size[0] + 50 + small_title_btn_size[1] and small_title_pos[1][1] < y_pos < small_title_pos[1][1] + small_title_btn_size[1]:
+                        if is_cursor_in_sml_button(main_difficulty_btn_pos, small_title_btn_size):
+                            difficulty_show = 0
+                        # if small_title_pos[0][0] + small_title_btn_size[0] + 50 < x_pos < small_title_pos[0][0] + small_title_btn_size[0] + 50 + small_title_btn_size[0] and small_title_pos[0][1] < y_pos < small_title_pos[0][1] + small_title_btn_size[1]:
+                        if is_cursor_in_sml_button(difficulty_btn_pos, small_title_btn_size):
+                            difficulty_show = 0
 
                 text_in_settings_page(difficulty)
                 for event in events_settings:
@@ -319,14 +339,17 @@ while meru:
                         x_pos = event.pos[0]
                         y_pos = event.pos[1]
                 if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-                    if is_cursor_in_sml_button(1):
+                    if is_cursor_in_sml_button(small_title_pos[1], small_title_btn_size):
                         settings_flag = False
                         break
+                    elif small_title_pos[0][0] + small_title_btn_size[0] + 50 < x_pos < small_title_pos[0][0] + small_title_btn_size[0] + 50 + small_title_btn_size[0] and small_title_pos[0][1] < y_pos < small_title_pos[0][1] + small_title_btn_size[1]:
+                        difficulty_show = 1
+                    
                 clock.tick(fps)
                 pygame.display.flip()
                         #######################################################################
             print('first small button was pressed.')
-        elif is_cursor_in_sml_button(2):
+        elif is_cursor_in_sml_button(small_title_pos[2], small_title_btn_size):
             break
 
         # print('just rect')
