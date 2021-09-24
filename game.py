@@ -267,6 +267,7 @@ def is_cursor_in_sml_button(position, size):
         result = True
     else:
         result = False
+    # print('aaa ' + 0str(x_pos) + str(y_pos))
     return result
 
 
@@ -317,22 +318,28 @@ while meru:
                 main_difficulty_btn_pos = (small_title_pos[0][0] + small_title_btn_size[0] + 50, small_title_pos[0][1])
                 screen.blit(small_cell, main_difficulty_btn_pos)
                 screen.blit(small_cell, small_title_pos[1])
-                if difficulty_show == 1:
+                if difficulty_show:
                     difficulty_list = [1]
-                    for i in range(len(difficulty_list)):
-                        difficulty_btn_pos = (small_title_pos[0][0] + small_title_btn_size[0] + 50, small_title_pos[1][1])
-                        screen.blit(small_cell, difficulty_btn_pos)
+                    # for i in range(len(difficulty_list)):
+                    difficulty_btn_pos = (small_title_pos[1][0] + small_title_btn_size[0] + 50, small_title_pos[1][1])
+                    screen.blit(small_cell, difficulty_btn_pos)
                     for event in events_settings:
                         if event.type == pygame.MOUSEMOTION:
                             x_pos = event.pos[0]
                             y_pos = event.pos[1]
                     if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-                        # if small_title_pos[1][0] + small_title_btn_size[0] + 50 < x_pos < small_title_pos[1][0] + small_title_btn_size[0] + 50 + small_title_btn_size[1] and small_title_pos[1][1] < y_pos < small_title_pos[1][1] + small_title_btn_size[1]:
+                        # if small_title_pos[0][0] + small_title_btn_size[0] + 50 < x_pos < small_title_pos[0][0] + small_title_btn_size[0] + 50 + small_title_btn_size[0] and small_title_pos[0][1] < y_pos < small_title_pos[0][1] + small_title_btn_size[1]:
                         if is_cursor_in_sml_button(main_difficulty_btn_pos, small_title_btn_size):
-                            difficulty_show = 0
+                            difficulty_show = not difficulty_show
+                            print('HELP')
+                            continue
                         # if small_title_pos[0][0] + small_title_btn_size[0] + 50 < x_pos < small_title_pos[0][0] + small_title_btn_size[0] + 50 + small_title_btn_size[0] and small_title_pos[0][1] < y_pos < small_title_pos[0][1] + small_title_btn_size[1]:
                         if is_cursor_in_sml_button(difficulty_btn_pos, small_title_btn_size):
-                            difficulty_show = 0
+                            difficulty_show = not difficulty_show
+                            print('test')
+                        else:
+                            difficulty_show = not difficulty_show
+
 
                 text_in_settings_page(difficulty)
                 for event in events_settings:
@@ -344,7 +351,8 @@ while meru:
                         settings_flag = False
                         break
                     elif small_title_pos[0][0] + small_title_btn_size[0] + 50 < x_pos < small_title_pos[0][0] + small_title_btn_size[0] + 50 + small_title_btn_size[0] and small_title_pos[0][1] < y_pos < small_title_pos[0][1] + small_title_btn_size[1]:
-                        difficulty_show = 1
+                        difficulty_show = not difficulty_show
+                        print('onnn')
                     
                 clock.tick(fps)
                 pygame.display.flip()
