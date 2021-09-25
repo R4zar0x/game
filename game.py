@@ -229,6 +229,7 @@ delete = pygame.image.load("GUI/trash.png")
 """Menu"""
 cell = pygame.image.load("GUI/mm.png")
 small_cell = pygame.image.load("GUI/menu_min.png")
+mic_cell = pygame.image.load("GUI/menu_mic.png")
 if (width == 1366 and height == 768) or (width == 1920 and width == 1080):
     menu_image = pygame.image.load(f"GUI/{width}x{height}/castle.png")
 elif width < 1366 or height < 768:      # or we must use 'and'
@@ -271,6 +272,8 @@ def is_cursor_in_sml_button(position, size):
 
 menu_title_btn_size = (367, 90)
 small_title_btn_size = (291, 71)
+mic_title_btn_size = (267, 65)
+
 menu_title_pos = (50, 50)
 small_title_pos = [(50, 160), (50, 251), (50, 342), (50, 433)]
 
