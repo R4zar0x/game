@@ -18,7 +18,7 @@ pygame.font.init()
 
 width, height = GetSystemMetrics(0), GetSystemMetrics(1)  # 924, 693; 1366, 768; 1920, 1080
 size_py = (width, height)
-screen = pygame.display.set_mode(size_py, pygame.FULLSCREEN)
+screen = pygame.display.set_mode(size_py)#, pygame.FULLSCREEN)
 clock = pygame.time.Clock()
 f1 = pygame.font.Font("Cony Light.otf", 21)
 f2 = pygame.font.Font("Cony Light.otf", 16)
@@ -31,7 +31,7 @@ run = False
 fps = 60
 move = 11  # ширина клетки
 
-difficulty_show = 0
+difficulty_show = False
 difficulty = 0
 speed = 1
 x = 180
@@ -49,6 +49,7 @@ zone = True  # наличие курсора в зоне карты
 lb = False  # не помню, вроде бесполезная херня
 rb_info = False  # нажатие ПКМ
 turn_checker = True  # Определяет, нужно ли двигаться иконке с датой
+difficulty_list = ['Легко', 'Средняя сложность', 'Хард']
 
 
 def menu_num():  # обработка меню выбора
@@ -254,10 +255,8 @@ def text_of_first_menu():
 def text_in_settings_page(difficulty):
     title_text = f_start_in_first_menu.render('Настройки', True, pygame.Color('black'))
     difficulty_text = f_small_btn_in_first_menu.render('Сложность', True, pygame.Color('black'))
-    exit_text = f_small_btn_in_first_menu.render('Выход', True, pygame.Color('black'))
     screen.blit(title_text, (147, 70))
     screen.blit(difficulty_text, (144, 182))
-    screen.blit(exit_text, (170, 274))
     
 
 def is_cursor_in_sml_button(position, size):
@@ -266,13 +265,14 @@ def is_cursor_in_sml_button(position, size):
         result = True
     else:
         result = False
+    # print('aaa ' + 0str(x_pos) + str(y_pos))
     return result
 
 
 menu_title_btn_size = (367, 90)
 small_title_btn_size = (291, 71)
 menu_title_pos = (50, 50)
-small_title_pos = [(50, 160), (50, 251), (50, 342)]
+small_title_pos = [(50, 160), (50, 251), (50, 342), (50, 433)]
 
 buttons_pos_and_size = (menu_title_pos, menu_title_btn_size, small_title_pos, small_title_btn_size)
 
@@ -282,7 +282,8 @@ settings_title_size = (367, 90)
 # menu_title_relativ_null = (menu_title_pos[0] + menu_title_btn_size[0], menu_title_btn_size[1])
 
 
-difficulty_show = 0
+settings = False
+difficulty_show = False
 meru = True
 while meru:
     events = pygame.event.get()  # кортеж событий
@@ -290,70 +291,82 @@ while meru:
         if event.type == pygame.MOUSEMOTION:  # обработка движения мыши
             x_pos = event.pos[0]
             y_pos = event.pos[1]
-            # mouse_relativ_x = x_pos - menu_title_relativ_null[0]
-            # mouse_relativ_y = menu_title_relativ_null[1] - y_pos
-
+            mouse_pos = (x_pos, y_pos)
     screen.blit(menu_image, (0, 0))
-    screen.blit(cell, menu_title_pos)
+    if not settings:
+        screen.blit(cell, menu_title_pos)
 
-    for i in range(len(small_title_pos)):
-        screen.blit(small_cell, small_title_pos[i])
-    text_of_first_menu()
+        for i in range(3):#len(small_title_pos)):
+            screen.blit(small_cell, small_title_pos[i])
+        text_of_first_menu()
 
-    if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-        if menu_title_pos[0] < x_pos < menu_title_pos[0] + menu_title_btn_size[0] and \
-                menu_title_pos[1] < y_pos < menu_title_pos[1] + menu_title_btn_size[1]:
-            run = True
-            break
-        if is_cursor_in_sml_button(small_title_pos[0], small_title_btn_size):
-            settings_flag = True
-            #############################################################################
-            while settings_flag:
-                events_settings = pygame.event.get()
-                screen.blit(menu_image, (0, 0))
-                screen.blit(cell, settings_title_pos)
-                screen.blit(small_cell, small_title_pos[0])
-                main_difficulty_btn_pos = (small_title_pos[0][0] + small_title_btn_size[0] + 50, small_title_pos[0][1])
-                screen.blit(small_cell, main_difficulty_btn_pos)
-                screen.blit(small_cell, small_title_pos[1])
-                if difficulty_show == 1:
-                    difficulty_list = [1]
-                    for i in range(len(difficulty_list)):
-                        difficulty_btn_pos = (small_title_pos[0][0] + small_title_btn_size[0] + 50, small_title_pos[1][1])
-                        screen.blit(small_cell, difficulty_btn_pos)
-                    for event in events_settings:
-                        if event.type == pygame.MOUSEMOTION:
-                            x_pos = event.pos[0]
-                            y_pos = event.pos[1]
-                    if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-                        # if small_title_pos[1][0] + small_title_btn_size[0] + 50 < x_pos < small_title_pos[1][0] + small_title_btn_size[0] + 50 + small_title_btn_size[1] and small_title_pos[1][1] < y_pos < small_title_pos[1][1] + small_title_btn_size[1]:
-                        if is_cursor_in_sml_button(main_difficulty_btn_pos, small_title_btn_size):
-                            difficulty_show = 0
-                        # if small_title_pos[0][0] + small_title_btn_size[0] + 50 < x_pos < small_title_pos[0][0] + small_title_btn_size[0] + 50 + small_title_btn_size[0] and small_title_pos[0][1] < y_pos < small_title_pos[0][1] + small_title_btn_size[1]:
-                        if is_cursor_in_sml_button(difficulty_btn_pos, small_title_btn_size):
-                            difficulty_show = 0
+        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+            if is_cursor_in_sml_button(menu_title_pos, menu_title_btn_size):
+                run = True
+                break
+            if is_cursor_in_sml_button(small_title_pos[0], small_title_btn_size):
+                settings = True
+            elif is_cursor_in_sml_button(small_title_pos[2], small_title_btn_size):
+                break
+    else:
+        screen.blit(menu_image, (0, 0))
+        screen.blit(cell, menu_title_pos)
+        difficulty_button_tittle_pos = small_title_pos[0]
+        exit_button_title_pos = small_title_pos[1][0], height - 100
+        screen.blit(small_cell, difficulty_button_tittle_pos)
+        screen.blit(small_cell, exit_button_title_pos)
+        exit_text = f_small_btn_in_first_menu.render('Выход', True, pygame.Color('black'))
+        screen.blit(exit_text, (exit_button_title_pos[0] + 112, exit_button_title_pos[1] + 22))
 
-                text_in_settings_page(difficulty)
-                for event in events_settings:
-                    if event.type == pygame.MOUSEMOTION:  # обработка движения мыши
-                        x_pos = event.pos[0]
-                        y_pos = event.pos[1]
-                if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-                    if is_cursor_in_sml_button(small_title_pos[1], small_title_btn_size):
-                        settings_flag = False
-                        break
-                    elif small_title_pos[0][0] + small_title_btn_size[0] + 50 < x_pos < small_title_pos[0][0] + small_title_btn_size[0] + 50 + small_title_btn_size[0] and small_title_pos[0][1] < y_pos < small_title_pos[0][1] + small_title_btn_size[1]:
-                        difficulty_show = 1
-                    
-                clock.tick(fps)
-                pygame.display.flip()
-                        #######################################################################
-            print('first small button was pressed.')
-        elif is_cursor_in_sml_button(small_title_pos[2], small_title_btn_size):
-            break
+        text_in_settings_page(1)
+        low_difficulty_btn_pos = (small_title_pos[1][0], small_title_pos[1][1])
+        medium_difficulty_btn_pos = (small_title_pos[2][0], small_title_pos[2][1])
+        hard_difficulty_btn_pos = (small_title_pos[3][0], small_title_pos[3][1])
+        
 
-        # print('just rect')
+        low_difficulty_text_x_pos = 121
+        medium_difficulty_text_x_pos = 42
+        hard_difficulty_text_x_pos = 120
+        
 
+        if difficulty == 0:
+            difficulty_text = ['< ' + difficulty_list[0] + ' >', difficulty_list[1], difficulty_list[2]]
+            low_difficulty_text_x_pos -= 25
+        elif difficulty == 1:
+            difficulty_text = [difficulty_list[0], '< ' + difficulty_list[1] + ' >', difficulty_list[2]]
+            medium_difficulty_text_x_pos -= 25
+        elif difficulty == 2:
+            difficulty_text = [difficulty_list[0], difficulty_list[1], '< ' + difficulty_list[2] + ' >']
+            hard_difficulty_text_x_pos -= 25
+
+        # print(difficulty_list[difficulty])
+
+        low_difficulty_title = f_small_btn_in_first_menu.render(difficulty_text[0], True, pygame.Color('Black'))
+        medium_difficulty_title = f_small_btn_in_first_menu.render(difficulty_text[1], True, pygame.Color('Black'))
+        hard_difficulty_title = f_small_btn_in_first_menu.render(difficulty_text[2], True, pygame.Color('Black'))
+
+
+        screen.blit(small_cell, low_difficulty_btn_pos)
+        screen.blit(small_cell, medium_difficulty_btn_pos)
+        screen.blit(small_cell, hard_difficulty_btn_pos)
+        screen.blit(low_difficulty_title, (low_difficulty_btn_pos[0] + low_difficulty_text_x_pos, low_difficulty_btn_pos[1] + 22))
+        screen.blit(medium_difficulty_title, (medium_difficulty_btn_pos[0] + medium_difficulty_text_x_pos, medium_difficulty_btn_pos[1] + 22))
+        screen.blit(hard_difficulty_title, (hard_difficulty_btn_pos[0] + hard_difficulty_text_x_pos, hard_difficulty_btn_pos[1] + 22))
+        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+            if is_cursor_in_sml_button(low_difficulty_btn_pos, small_title_btn_size):
+                difficulty = 0
+                # difficulty_show = False
+            elif is_cursor_in_sml_button(medium_difficulty_btn_pos, small_title_btn_size):
+                difficulty = 1
+                # difficulty_show = False
+            elif is_cursor_in_sml_button(hard_difficulty_btn_pos, small_title_btn_size):
+                difficulty = 2
+                # difficulty_show = False
+        # if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+            if is_cursor_in_sml_button(small_title_pos[0], small_title_btn_size):
+                difficulty_show = True
+            if is_cursor_in_sml_button(exit_button_title_pos, small_title_btn_size):
+                settings = False
     clock.tick(fps)
     pygame.display.flip()
 
