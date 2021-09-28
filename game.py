@@ -18,7 +18,7 @@ pygame.font.init()
 
 width, height = GetSystemMetrics(0), GetSystemMetrics(1)  # 924, 693; 1366, 768; 1920, 1080
 size_py = (width, height)
-screen = pygame.display.set_mode(size_py)#, pygame.FULLSCREEN)
+screen = pygame.display.set_mode(size_py, pygame.FULLSCREEN)
 clock = pygame.time.Clock()
 f1 = pygame.font.Font("Cony Light.otf", 21)
 f2 = pygame.font.Font("Cony Light.otf", 16)
@@ -49,7 +49,7 @@ zone = True  # наличие курсора в зоне карты
 lb = False  # не помню, вроде бесполезная херня
 rb_info = False  # нажатие ПКМ
 turn_checker = True  # Определяет, нужно ли двигаться иконке с датой
-difficulty_list = ['Легко', 'Средняя сложность', 'Хард']
+difficulty_list = ['Легко', 'Средняя', 'Хард']
 
 
 def menu_num():  # обработка меню выбора
@@ -327,9 +327,9 @@ while meru:
         hard_difficulty_btn_pos = (small_title_pos[3][0], small_title_pos[3][1])
         
 
-        low_difficulty_text_x_pos = 121
-        medium_difficulty_text_x_pos = 42
-        hard_difficulty_text_x_pos = 120
+        low_difficulty_text_x_pos = 108
+        medium_difficulty_text_x_pos = 93
+        hard_difficulty_text_x_pos = 112
         
 
         if difficulty == 0:
@@ -349,9 +349,9 @@ while meru:
         hard_difficulty_title = f_small_btn_in_first_menu.render(difficulty_text[2], True, pygame.Color('Black'))
 
 
-        screen.blit(small_cell, low_difficulty_btn_pos)
-        screen.blit(small_cell, medium_difficulty_btn_pos)
-        screen.blit(small_cell, hard_difficulty_btn_pos)
+        screen.blit(mic_cell, low_difficulty_btn_pos)
+        screen.blit(mic_cell, medium_difficulty_btn_pos)
+        screen.blit(mic_cell, hard_difficulty_btn_pos)
         screen.blit(low_difficulty_title, (low_difficulty_btn_pos[0] + low_difficulty_text_x_pos, low_difficulty_btn_pos[1] + 22))
         screen.blit(medium_difficulty_title, (medium_difficulty_btn_pos[0] + medium_difficulty_text_x_pos, medium_difficulty_btn_pos[1] + 22))
         screen.blit(hard_difficulty_title, (hard_difficulty_btn_pos[0] + hard_difficulty_text_x_pos, hard_difficulty_btn_pos[1] + 22))
