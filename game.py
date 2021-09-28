@@ -48,7 +48,7 @@ inf_pos = 0  # Запоминание ячейки, о которой нужно
 zone = True  # наличие курсора в зоне карты
 lb = False  # не помню, вроде бесполезная херня
 rb_info = False  # нажатие ПКМ
-turn_checker = True  # Определяет, нужно ли двигаться иконке с датой
+turn_checker = False  # Определяет, нужно ли двигаться иконке с датой
 difficulty_list = ['Легко', 'Средняя', 'Хард']
 
 
@@ -70,7 +70,10 @@ def menu_num():  # обработка меню выбора
         elif 264 <= event.pos[0] < 308:
             menu = 6
         elif width - 90 <= event.pos[0] < width - 46:  # -90 = 2 * 44 - 2; -47 = - 44 - 2
-            menu = 29
+            if width == 1366:
+                menu = 29
+            elif width == 1920:
+                menu = 44
         elif width - 46 <= event.pos[0] < width - 2:  # -46 = - 44 - 2; -3 =  - 2
             global run
             run = False
@@ -95,7 +98,7 @@ def add():  # добавление на карту зданий
             map_arr[ii][jj] = 14
         elif menu == 6 and map_arr[ii][jj] == 0:
             map_arr[ii][jj] = 15
-        elif menu == 29 and (12 >= map_arr[ii][jj] >= 8):
+        elif menu == 29 and (12 >= map_arr[ii][jj] >= 8 or map_arr[ii][jj] == 14 or map_arr[ii][jj] == 15):
             map_arr[ii][jj] = 0
 
 
@@ -157,7 +160,7 @@ def info(inf, n_txt):  # меню вызываемое на ПКМ
         pygame.draw.rect(screen, pygame.Color("white"), (width - 255, 44, 254, 308))
         pygame.draw.rect(screen, pygame.Color("dimgray"), (width - 255, 44, 254, 308), 2)
         txt = f1.render(str(tfg.text[n_txt]), True, pygame.Color("dimgray"))
-        screen.blit(txt, (width - 154, height - 721))
+        screen.blit(txt, (width - 154, 47))
         txt1 = str(tfg.inf_tx[n_txt])
         word_wrap(screen, txt1, font)
 
@@ -417,9 +420,9 @@ while run:
             if x_cap < event.pos[0] < x_cap + move * 5 + 1 and y_cap < event.pos[1] < y_cap + move * 5 + 1:  # курсор внутри красного квадрата
                 add()  # вызов функции
         elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 3:  # проверка нажатия ПКМ
-            rb_info = not rb_info  # включение меню
-            inf_pos = map_arr[int(ly / move) - 4][
-                int(lx / move)]  # запоминание ячейки, о которой нужно показать информацию
+            if ly > 43:
+                rb_info = not rb_info  # включение меню
+                inf_pos = map_arr[int(ly / move) - 4][int(lx / move)]  # запоминание ячейки, о которой нужно показать информацию
 
     keys = pygame.key.get_pressed()  # кортеж нажатых клавиш
     if keys[pygame.K_1]:  # если нажата клавиша 1 то выбано на панеле соответствующее значение
