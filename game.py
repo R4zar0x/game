@@ -105,8 +105,8 @@ def add():  # добавление на карту зданий
 def greed():
     """отрисовка сетки мира"""
     for xg in range(0, width, move):
-        pygame.draw.aaline(screen, pygame.Color("gray"), (xg, move * 4), (xg, height))  # вертикальные полосы
-    for yg in range(move * 4, height, move):
+        pygame.draw.aaline(screen, pygame.Color("gray"), (xg, 44), (xg, height))  # вертикальные полосы
+    for yg in range(44, height, move):
         pygame.draw.aaline(screen, pygame.Color("gray"), (0, yg), (width, yg))  # горизонтальные полосы
     pygame.draw.aaline(screen, pygame.Color("dimgray"), (0, 44), (width, 44),
                        1)  # верхняя темная линия (под меню выбора)
@@ -171,37 +171,6 @@ while y_cap < 43:
     x_cap = x_cap - (x_cap % move) - 1
     y_cap = y_cap - (y_cap % move) - 1
 
-tx = int(width / move)  # определение колличества клеток по оси Х
-ty = int((height - move * 4) / move)  # определение колличества клеток по оси У
-for i in range(ty):  # заполнение массива карты
-    map_arr.append([])
-    fir_count = 0
-    sw = 0
-    for j in range(tx):
-        c = random.randint(0, 400)
-        if 50 >= c >= 45:
-            map_arr[i].append(1)  # Уголь
-        elif c == 1:
-            map_arr[i].append(2)  # Медь
-        elif c == 2 and fir_count < 10:
-            map_arr[i].append(3)  # Фируз
-            fir_count += 1
-        elif c == 3:
-            map_arr[i].append(4)  # Золото
-        elif c == 4:
-            map_arr[i].append(5)  # Железо
-        elif c == 5 and sw < 4:
-            map_arr[i].append(6)  # Болотный камень
-            sw += 1
-        elif c == 6:
-            map_arr[i].append(7)  # Олово
-        elif 13 <= c <= 33:
-            map_arr[i].append(13)  # Дерево
-        else:
-            map_arr[i].append(0)  # Пустое поле
-
-with open('seed.txt', 'w') as fw:
-    json.dump(map_arr, fw)
 
 """Копирование изображений в ОЗУ и присваивание им названий"""
 """ Ресурсы"""
@@ -240,6 +209,26 @@ elif width < 1366 or height < 768:      # or we must use 'and'
 else:
     menu_image = pygame.image.load(f"GUI/1920x1080/castle.png")
 
+
+def surf_scale(mov):
+    """ Ресурсы"""
+    pygame.transform.scale(coal, (move, move))
+    pygame.transform.scale(copper, (mov, mov))
+    pygame.transform.scale(firuz, (mov, mov))
+    pygame.transform.scale(gold, (mov, mov))
+    pygame.transform.scale(iron, (mov, mov))
+    pygame.transform.scale(swamp_st, (mov, mov))
+    pygame.transform.scale(tin, (mov, mov))
+    pygame.transform.scale(tree, (mov, mov))
+
+    """Постройки"""
+    pygame.transform.scale(farm_surf, (mov, mov))
+    pygame.transform.scale(fac_surf, (mov, mov))
+    pygame.transform.scale(lab_surf, (mov, mov))
+    pygame.transform.scale(home_surf, (mov, mov))
+    pygame.transform.scale(mine_surf, (mov, mov))
+    pygame.transform.scale(storage_surf, (mov, mov))
+    pygame.transform.scale(sawmill_surf, (mov, mov))
 
 x_pos = 1
 y_pos = 1
@@ -302,7 +291,7 @@ while meru:
     if not settings:
         screen.blit(cell, menu_title_pos)
 
-        for i in range(3):#len(small_title_pos)):
+        for i in range(3):  # len(small_title_pos)):
             screen.blit(small_cell, small_title_pos[i])
         text_of_first_menu()
 
@@ -377,6 +366,39 @@ while meru:
     pygame.display.flip()
 
 
+tx = int(width / move)  # определение колличества клеток по оси Х
+ty = int((height - move * 4) / move)  # определение колличества клеток по оси У
+for i in range(ty):  # заполнение массива карты
+    map_arr.append([])
+    fir_count = 0
+    sw = 0
+    for j in range(tx):
+        c = random.randint(0, 400)
+        if 50 >= c >= 45:
+            map_arr[i].append(1)  # Уголь
+        elif c == 1:
+            map_arr[i].append(2)  # Медь
+        elif c == 2 and fir_count < 10:
+            map_arr[i].append(3)  # Фируз
+            fir_count += 1
+        elif c == 3:
+            map_arr[i].append(4)  # Золото
+        elif c == 4:
+            map_arr[i].append(5)  # Железо
+        elif c == 5 and sw < 4:
+            map_arr[i].append(6)  # Болотный камень
+            sw += 1
+        elif c == 6:
+            map_arr[i].append(7)  # Олово
+        elif 13 <= c <= 33:
+            map_arr[i].append(13)  # Дерево
+        else:
+            map_arr[i].append(0)  # Пустое поле
+
+with open('seed.txt', 'w') as fw:
+    json.dump(map_arr, fw)
+
+
 while run:
     if turn_checker:
         if turn_position == 0:
@@ -423,6 +445,11 @@ while run:
             if ly > 43:
                 rb_info = not rb_info  # включение меню
                 inf_pos = map_arr[int(ly / move) - 4][int(lx / move)]  # запоминание ячейки, о которой нужно показать информацию
+        elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 4:
+            if move > 11:
+                move -= 1
+        elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 5:
+            move += 1
 
     keys = pygame.key.get_pressed()  # кортеж нажатых клавиш
     if keys[pygame.K_1]:  # если нажата клавиша 1 то выбано на панеле соответствующее значение
@@ -441,6 +468,10 @@ while run:
         menu = 29
     if keys[pygame.K_ESCAPE]:
         run = False
+    if keys[pygame.K_KP_PLUS]:
+        move += 1
+    if keys[pygame.K_KP_MINUS]:
+        move -= 1
 
     screen.fill(pygame.Color('white'))  # заполнения экрана белым
     greed()  # отрисовка сетки
@@ -450,49 +481,49 @@ while run:
         for j in range(tx):
             if map_arr[i][j] == 1:
                 """отрисовка угля"""
-                screen.blit(coal, (j * move, (i + 4) * move))
+                screen.blit(pygame.transform.scale(coal, (move + 1, move + 1)), (j * move, i * move + 44))
             elif map_arr[i][j] == 2:
                 """отрисовка меди"""
-                screen.blit(copper, (j * move, (i + 4) * move))
+                screen.blit(pygame.transform.scale(copper, (move + 1, move + 1)), (j * move, i * move + 44))
             elif map_arr[i][j] == 3:
                 """отрисовка фируза"""
-                screen.blit(firuz, (j * move, (i + 4) * move))
+                screen.blit(pygame.transform.scale(firuz, (move + 1, move + 1)), (j * move, i * move + 44))
             elif map_arr[i][j] == 4:
                 """отрисовка золота"""
-                screen.blit(gold, (j * move, (i + 4) * move))
+                screen.blit(pygame.transform.scale(gold, (move + 1, move + 1)), (j * move, i * move + 44))
             elif map_arr[i][j] == 5:
                 """отрисовка железа"""
-                screen.blit(iron, (j * move, (i + 4) * move))
+                screen.blit(pygame.transform.scale(iron, (move + 1, move + 1)), (j * move, i * move + 44))
             elif map_arr[i][j] == 6:
                 """отрисовка болотного камня"""
-                screen.blit(swamp_st, (j * move, (i + 4) * move))
+                screen.blit(pygame.transform.scale(swamp_st, (move + 1, move + 1)), (j * move, i * move + 44))
             elif map_arr[i][j] == 7:
                 """отрисовка олова"""
-                screen.blit(tin, (j * move, (i + 4) * move))
+                screen.blit(pygame.transform.scale(tin, (move + 1, move + 1)), (j * move, i * move + 44))
             elif map_arr[i][j] == 8:
                 """отрисовка фермы"""
-                screen.blit(farm_surf, (j * move, (i + 4) * move))
+                screen.blit(pygame.transform.scale(farm_surf, (move + 1, move + 1)), (j * move, i * move + 44))
             elif map_arr[i][j] == 9:
                 """отрисовка завода"""
-                screen.blit(fac_surf, (j * move, (i + 4) * move))
+                screen.blit(pygame.transform.scale(fac_surf, (move + 1, move + 1)), (j * move, i * move + 44))
             elif map_arr[i][j] == 10:
                 """отрисовка лаборатории"""
-                screen.blit(lab_surf, (j * move, (i + 4) * move))
+                screen.blit(pygame.transform.scale(lab_surf, (move + 1, move + 1)), (j * move, i * move + 44))
             elif map_arr[i][j] == 11:
                 """отрисовка дома"""
-                screen.blit(home_surf, (j * move, (i + 4) * move))
+                screen.blit(pygame.transform.scale(home_surf, (move + 1, move + 1)), (j * move, i * move + 44))
             elif map_arr[i][j] == 12:
                 """отрисовка шахты"""
-                screen.blit(mine_surf, (j * move, (i + 4) * move))
+                screen.blit(pygame.transform.scale(mine_surf, (move + 1, move + 1)), (j * move, i * move + 44))
             elif map_arr[i][j] == 13:
                 """отрисовка дерева"""
-                screen.blit(tree, (j * move, (i + 4) * move))
+                screen.blit(pygame.transform.scale(tree, (move + 1, move + 1)), (j * move, i * move + 44))
             elif map_arr[i][j] == 14:
                 """отрисовка склада"""
-                screen.blit(storage_surf, (j * move, (i + 4) * move))
+                screen.blit(pygame.transform.scale(storage_surf, (move + 1, move + 1)), (j * move, i * move + 44))
             elif map_arr[i][j] == 15:
                 """отрисовка лесопилки"""
-                screen.blit(sawmill_surf, (j * move, (i + 4) * move))
+                screen.blit(pygame.transform.scale(sawmill_surf, (move + 1, move + 1)), (j * move, i * move + 44))
 
     mouse_rect(lx, ly)
     pygame.draw.rect(screen, pygame.Color("red"), (x_cap, y_cap, move * 5 + 3, move * 5 + 3), 1)  # красный квадрат
