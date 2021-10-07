@@ -1,8 +1,6 @@
 import random
 from os import environ
-
 from pygame.event import event_name
-
 environ['PYGAME_HIDE_SUPPORT_PROMPT'] = '1'  # отключает приветствие от создателей пайгейма
 import pygame
 import pygame.freetype  # использование других шрифтов
